@@ -60,8 +60,8 @@ export class UserController {
   @Get('list')
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: '用户列表' })
-  // @ApiPaginatedResponse(UserItemDto)
   @ApiListResponse(UserItemDto)
+  // @ApiPaginatedResponse(UserItemDto)
   async findAll() {
     return await this.userService.findAll()
   }

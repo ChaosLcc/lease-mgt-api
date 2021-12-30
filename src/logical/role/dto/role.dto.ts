@@ -8,21 +8,31 @@
 import { ContentDto } from '../../content/dto/content.dto'
 import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
+import { UserItemDto } from '../../user/dto/user.dto'
 
 export class RoleItemDto extends ContentDto {
-  @ApiProperty({ description: '角色名称', example: 'Admin' })
+  /**
+   * 角色名称
+   * @example Admin
+   */
   @IsNotEmpty({ message: '角色名称不能为空' })
-  @IsString({ message: '角色名称必须是 String 类型' })
-  roleName: string
+  roleName?: string
 
-  @ApiPropertyOptional({ description: '角色值' })
-  roleValue: string
+  /**
+   * 角色值
+   */
+  roleValue?: string
 
-  @ApiProperty({ description: '角色备注', example: '我是Admin' })
-  remark: string
+  /**
+   * 角色备注
+   * @example 我是Admin
+   */
+  remark?: string
 
-  @ApiProperty({ description: '角色状态 0-不可用 1-可用' })
-  status: number
+  /**
+   * 角色状态 0-不可用 1-可用
+   */
+  status?: number
 }
 
 export class CreateRoleDto extends PickType(RoleItemDto, [
@@ -30,8 +40,12 @@ export class CreateRoleDto extends PickType(RoleItemDto, [
   'remark',
 ]) {}
 
-export class UpdateRoleDto extends PickType(RoleItemDto, [
-  'id',
-  'roleName',
-  'remark',
-]) {}
+export class UpdateRoleDto extends PickType(RoleItemDto, ['remark']) {
+  /**
+   * 角色名称
+   */
+  roleName?: string
+
+  @IsNotEmpty({ message: 'id不能为空' })
+  id: number
+}

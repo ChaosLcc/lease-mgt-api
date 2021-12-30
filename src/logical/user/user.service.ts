@@ -13,26 +13,21 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    try {
-      return await this.userRepository.save(createUserDto)
-    } catch (e) {
-      console.log(e)
-      return void 0
-    }
+    return await this.userRepository.save(createUserDto)
   }
 
   findAll() {
-    return this.userRepository.find()
-    // return `This action returns all user`;
+    return this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'role')
+      .where('user.role = role.id')
+      .printSql()
+      .getMany()
+    // return this.userRepository.find({ relations: ['role'] })
   }
 
   async findOne(username: string) {
-    try {
-      return await this.userRepository.findOne({ username })
-    } catch (e) {
-      Logger.error(e)
-      return void 0
-    }
+    return await this.userRepository.findOne({ username })
     // return `This action returns a #${id} user`;
   }
 

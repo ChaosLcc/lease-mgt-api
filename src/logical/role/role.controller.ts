@@ -14,51 +14,58 @@ import { CreateRoleDto, RoleItemDto, UpdateRoleDto } from './dto/role.dto'
 import {
   ApiBearerAuth,
   ApiBody,
-  ApiOperation,
+  ApiExtraModels,
   ApiQuery,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger'
 import { ValidationPipe } from '../../pipe/validation.pipe'
 import { AuthGuard } from '@nestjs/passport'
+import { ApiListResponse } from '../../decorator/api-list-response.decorator'
 
 @ApiTags('role')
 @ApiBearerAuth()
 @Controller('role')
 @UseGuards(AuthGuard('jwt'))
+@ApiExtraModels(RoleItemDto)
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
+  /**
+   * 新增角色
+   * @param createRoleDto
+   */
   @Post()
   @UsePipes(ValidationPipe)
   @ApiBody({ description: '请求示例', type: CreateRoleDto })
-  @ApiOperation({ summary: '新增角色' })
   create(@Body() createRoleDto: RoleItemDto) {
     return this.roleService.create(createRoleDto)
   }
 
+  /**
+   * 角色列表-无分页
+   */
   @Get()
-  @ApiOperation({ summary: '角色列表-无分页' })
-  @ApiResponse({
-    status: 200,
-    type: RoleItemDto,
-    isArray: true,
-    description: '响应示例',
-  })
+  @ApiListResponse(RoleItemDto)
   findAll() {
     return this.roleService.findAll()
   }
 
+  /**
+   * 修改角色
+   * @param updateRoleDto
+   */
   @Put()
-  @ApiOperation({ summary: '修改角色' })
-  @ApiQuery({ name: 'id', description: '角色id' })
+  @UsePipes(ValidationPipe)
   @ApiBody({ type: UpdateRoleDto, description: '请求示例' })
-  update(@Query('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.update(+id, updateRoleDto)
+  async update(@Body() updateRoleDto: UpdateRoleDto) {
+    return await this.roleService.update(+updateRoleDto.id, updateRoleDto)
   }
 
+  /**
+   * 删除角色
+   * @param id
+   */
   @Delete()
-  @ApiOperation({ summary: '删除角色' })
   @ApiQuery({ name: 'id', description: '角色id' })
   remove(@Query('id') id: string) {
     return this.roleService.remove(+id)

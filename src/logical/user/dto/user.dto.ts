@@ -8,6 +8,7 @@
 import { PickType, OmitType } from '@nestjs/swagger'
 import { IsNotEmpty, IsString } from 'class-validator'
 import { ContentDto } from '../../content/dto/content.dto'
+import { RoleItemDto } from '../../role/dto/role.dto'
 
 export class UserItemDto extends ContentDto {
   /**
@@ -31,7 +32,9 @@ export class UserItemDto extends ContentDto {
   /**
    * 角色值
    */
-  role: number
+  roleId: number
+
+  role: RoleItemDto
 
   /**
    * 备注

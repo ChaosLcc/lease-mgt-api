@@ -1,8 +1,12 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common'
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Logger } from '../utils/log4js'
-import { isNil, isUndefined } from '@nestjs/common/utils/shared.utils'
 
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
@@ -19,10 +23,18 @@ export class TransformInterceptor implements NestInterceptor {
     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<`
         Logger.info(logFormat)
         Logger.access(logFormat)
-        if (isUndefined(data.code) || isNil(data.code)) {
-          return { data, code: 0, msg: 'success' }
+        if (data) {
+          if (Object.keys(data).indexOf('affected') !== -1) {
+            return { code: 0, msg: 'success' }
+          } else {
+            return {
+              code: data.code || 0,
+              data: data.data ?? data,
+              msg: data.msg || 'success',
+            }
+          }
         } else {
-          return { code: data.code, data: data.data ?? {}, msg: data.msg }
+          return data
         }
       }),
     )

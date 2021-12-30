@@ -1,5 +1,6 @@
 import { Content } from '../../content/entities/content.entity'
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
+import { User } from '../../user/entities/user.entity'
 
 @Entity()
 export class Role extends Content {
@@ -36,4 +37,9 @@ export class Role extends Content {
     comment: '角色状态 0-不可用 1可用',
   })
   status: number
+
+  // @OneToMany(() => User, (user) => user.role, {
+  //   eager: false,
+  // })
+  // users: User[]
 }
