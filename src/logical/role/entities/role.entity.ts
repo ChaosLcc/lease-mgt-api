@@ -1,6 +1,5 @@
 import { Content } from '../../content/entities/content.entity'
 import { Column, Entity, OneToMany } from 'typeorm'
-import { User } from '../../user/entities/user.entity'
 
 @Entity()
 export class Role extends Content {

@@ -1,6 +1,7 @@
 import { Content } from '../../content/entities/content.entity'
-import { Column } from 'typeorm/browser'
+import { Column, Entity } from 'typeorm'
 
+@Entity()
 export class Access extends Content {
   @Column({
     nullable: false,

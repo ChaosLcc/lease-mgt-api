@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common'
 import { CreateAccessDto, UpdateAccessDto } from './dto/access.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Access } from './entities/access.entity'
-import { Repository } from 'typeorm/browser'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class AccessService {
   constructor(
     @InjectRepository(Access)
-    private readonly accessRepository: Repository<Access>,
+    private accessRepository: Repository<Access>,
   ) {}
 
   create(createAccessDto: CreateAccessDto) {

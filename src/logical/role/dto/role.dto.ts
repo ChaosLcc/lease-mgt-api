@@ -6,9 +6,8 @@
  * @update: 2021-12-22 10:49
  */
 import { ContentDto } from '../../content/dto/content.dto'
-import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger'
-import { IsNotEmpty, IsString } from 'class-validator'
-import { UserItemDto } from '../../user/dto/user.dto'
+import { PickType } from '@nestjs/swagger'
+import { IsNotEmpty } from 'class-validator'
 
 export class RoleItemDto extends ContentDto {
   /**
