@@ -34,6 +34,7 @@ export class Access extends Content {
   @Column({
     nullable: false,
     name: 'module_id',
+    default: 0,
     comment: '此moduleID和ID关联, module_id = 0 表示模块',
   })
   moduleId: number

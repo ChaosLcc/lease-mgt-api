@@ -16,7 +16,7 @@ import {
   UpdateUserDto,
   LoginDto,
   UserItemDto,
-  RegisterDto,
+  RegisterDto, AddUserDto,
 } from './dto/user.dto'
 import { AuthService } from '../auth/auth.service'
 import { AuthGuard } from '@nestjs/passport'
@@ -91,6 +91,14 @@ export class UserController {
   @ApiParam({ name: 'id', description: '用户id' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id)
+  }
+
+  @Post('add')
+  @UsePipes(new ValidationPipe()) // 使用管道验证数据
+  @ApiOperation({ summary: '添加用户' })
+  @ApiBody({ type: AddUserDto })
+  add(@Body() body: AddUserDto) {
+    return this.userService.add(body)
   }
 
   @Post('register')

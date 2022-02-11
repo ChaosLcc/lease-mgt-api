@@ -27,10 +27,18 @@ export class TransformInterceptor implements NestInterceptor {
           if (Object.keys(data).indexOf('affected') !== -1) {
             return { code: 0, msg: 'success' }
           } else {
-            return {
-              code: data.code || 0,
-              data: data.data ?? data,
-              msg: data.msg || 'success',
+            if (Object.keys(data).indexOf('code') === -1) {
+              return {
+                code: 0,
+                data: data,
+                msg: 'success',
+              }
+            } else {
+              return {
+                code: data.code,
+                data: data.data ?? {},
+                msg: data.msg || 'success',
+              }
             }
           }
         } else {

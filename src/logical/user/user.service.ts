@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto'
+import { AddUserDto, CreateUserDto, UpdateUserDto } from './dto/user.dto'
 import { Repository } from 'typeorm'
 import { User } from './entities/user.entity'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -39,6 +39,18 @@ export class UserService {
   remove(id: number) {
     return this.userRepository.delete(id)
     // return `This action removes a #${id} user`;
+  }
+
+  async add(reqBody: AddUserDto) {
+    // 判断用户名是否存在
+    const findUser = await this.findOne(reqBody.username)
+    Logger.log(findUser)
+    if (findUser) return { code: 400, msg: '用户已存在' }
+    // 添加的用户 密码默认666666
+    const salt = makeSalt()
+    reqBody.password = encryptPassword('666666', salt)
+    reqBody.passwordSalt = salt
+    return await this.userRepository.save(reqBody)
   }
 
   async register(reqBody: CreateUserDto) {

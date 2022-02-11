@@ -18,8 +18,14 @@ import {
 import { ApiObjResponse } from '../../decorator/api-obj-response.decorator'
 import { ApiListResponse } from '../../decorator/api-list-response.decorator'
 import { ValidationPipe } from '../../pipe/validation.pipe'
-import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiExtraModels,
+  ApiTags,
+} from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
+import { Logger } from '../../utils/log4js'
 
 @Controller('access')
 @ApiTags('access')
@@ -35,8 +41,10 @@ export class AccessController {
    */
   @Post()
   @ApiObjResponse(AccessItemDto)
-  @UsePipes(ValidationPipe)
+  @ApiBody({ description: '新增权限', type: CreateAccessDto })
+  @UsePipes(new ValidationPipe())
   create(@Body() createAccessDto: CreateAccessDto) {
+    Logger.log(createAccessDto)
     return this.accessService.create(createAccessDto)
   }
 

@@ -39,12 +39,12 @@ export class UserItemDto extends ContentDto {
   /**
    * 备注
    */
-  remark: string
+  remark?: string
 
   /**
    * 用户状态: 1-可用 0-不可用
    */
-  status: number
+  status?: number
 
   /**
    * 手机号
@@ -92,3 +92,22 @@ export class RegisterDto extends PickType(UserItemDto, [
 export class LoginDto extends PickType(RegisterDto, ['username', 'password']) {}
 
 export type CreateUserDto = RegisterDto
+
+export class AddUserDto extends OmitType(UserItemDto, ['role', 'id']) {
+  /**
+   * 角色值
+   */
+  @IsNotEmpty({ message: '角色值不能为空' })
+  roleId: number
+
+  /**
+   * 密码
+   * @example 666666
+   */
+  password?: string
+
+  /**
+   * 密码盐
+   */
+  passwordSalt?: string
+}
